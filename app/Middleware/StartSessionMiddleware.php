@@ -4,37 +4,32 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
-use App\Exception\SessionException;
+use App\Contracts\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class StartSessionMiddleware implements MiddlewareInterface
+readonly class StartSessionMiddleware implements MiddlewareInterface
 {
+
+    public function __construct(
+        private SessionInterface $session,
+    ) {
+    }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (session_status() === PHP_SESSION_ACTIVE) {
-            throw new  SessionException('Session already started');
-        }
-
-        if (headers_sent()) {
-            throw new  SessionException('Headers already sent');
-        }
-
-        session_set_cookie_params([
-            'secure' => true,
-            'httponly' => true,
-            'samesite' => 'Lax',
-        ]);
-
-        session_start();
+        $this->session->start();
 
         $response = $handler->handle($request);
 
-        // session_write_close() is called to close the session and release the lock on the session file.
-        session_write_close();
+        // TODO: Check for XHR requests
+        if ($request->getMethod() === 'GET') {
+            $this->session->put('previousUrl', (string) $request->getUri());
+        }
+
+        $this->session->save();
 
         return $response;
     }

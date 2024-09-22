@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App;
 
 use App\Contracts\AuthInterface;
+use App\Contracts\SessionInterface;
 use App\Contracts\UserInterface;
 use App\Contracts\UserProviderServiceInterface;
-use App\Entity\User;
-use Doctrine\ORM\EntityManager;
 
 class Auth implements AuthInterface
 {
@@ -16,6 +15,7 @@ class Auth implements AuthInterface
 
     public function __construct(
         private readonly UserProviderServiceInterface $userProvider,
+        private readonly SessionInterface $session
     ) {
     }
 
@@ -25,9 +25,9 @@ class Auth implements AuthInterface
             return $this->user;
         }
 
-        $userId = $_SESSION['user'] ?? null;
+        $userId = $this->session->get('user');
 
-        if ($userId === null) {
+        if (!$userId) {
             return null;
         }
 
@@ -50,9 +50,8 @@ class Auth implements AuthInterface
             return false;
         }
 
-        session_regenerate_id();
-
-        $_SESSION['user'] = $user->getId();
+        $this->session->regenerate();
+        $this->session->put('user', $user->getId());
 
         $this->user = $user;
 
@@ -66,7 +65,8 @@ class Auth implements AuthInterface
 
     public function logout(): void
     {
-        unset($_SESSION['user']);
+        $this->session->forget('user');
+        $this->session->regenerate();
 
         $this->user = null;
     }
