@@ -5,10 +5,26 @@ App that I am building to enhance my skills in backend development with PHP.
 #### Technologies
 - PHP 8.3
 - Slim Framework 4
-- NGINX
+- Nginx
 - MySQL
 - Docker
 - PHPUnit
 
 #### Features
-- [ ] User authentication
+- [ ] User Authentication 
+- [ ] Form Validation
+- [ ] Session Based Authentication
+- [ ] CSRF Protection
+- [ ] XSS Protection
+- [ ] CRUD Actions
+- [ ] Ajax 
+- [ ] DataTables & Pagination
+- [ ] Sorting & Filtering
+- [ ] Profiling for N+1 Queries
+- [ ] Route Model Binding with Slim
+- [ ] Authorization with Doctrine Filters
+- [ ] Email Verification
+- [ ] Two-Factor Auh
+- [ ] Caching with Redis
+- [ ] Rate Limiting
+- [ ] Uploading Files to S3 Bucket
