@@ -11,4 +11,4 @@ App that I am building to enhance my skills in backend development with PHP.
 - PHPUnit
 
 #### Features
-- User authentication
+- [ ] User authentication
