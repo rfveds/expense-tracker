@@ -1,5 +1,5 @@
 {
-  "name": "money-tracker",
+  "name": "expense-tracker",
   "version": "1.0.0",
   "scripts": {
     "dev": "encore dev",
