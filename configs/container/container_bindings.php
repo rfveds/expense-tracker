@@ -2,11 +2,18 @@
 
 declare(strict_types=1);
 
+use App\Auth;
 use App\Config;
+use App\Contracts\AuthInterface;
+use App\Contracts\UserProviderServiceInterface;
 use App\Enum\AppEnvironment;
+use App\Services\UserProviderService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Slim\App;
+use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Symfony\Bridge\Twig\Extension\AssetExtension;
 use Symfony\Component\Asset\Package;
@@ -20,6 +27,20 @@ use Twig\Extra\Intl\IntlExtension;
 use function DI\create;
 
 return [
+    App::class => function (ContainerInterface $container) {
+        AppFactory::setContainer($container);
+
+        $addMiddlewares = require CONFIG_PATH . '/middleware.php';
+        $router = require CONFIG_PATH . '/routes/web.php';
+
+        $app = AppFactory::create();
+
+        $router($app);
+
+        $addMiddlewares($app);
+
+        return $app;
+    },
     Config::class => create(Config::class)->constructor(require CONFIG_PATH . '/app.php'),
     EntityManager::class => fn(Config $config) => EntityManager::create(
         $config->get('doctrine.connection'),
@@ -50,4 +71,8 @@ return [
         new EntrypointLookup(BUILD_PATH . '/entrypoints.json'),
         $container->get('webpack_encore.packages')
     ),
+    ResponseFactoryInterface::class => fn(App $app) => $app->getResponseFactory(),
+    AuthInterface::class => fn(ContainerInterface $container) => $container->get(Auth::class),
+    UserProviderServiceInterface::class => fn(ContainerInterface $container) => $container->get(UserProviderService::class),
+
 ];

@@ -10,7 +10,7 @@ use Slim\Views\Twig;
 
 class HomeController
 {
-    public function __construct(private readonly Twig $twig)
+    public function __construct(private Twig $twig)
     {
     }
 
