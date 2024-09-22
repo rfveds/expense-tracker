@@ -23,6 +23,10 @@ composer-install:
 dump-autoload:
 	docker-compose -f docker/docker-compose.yml exec app composer dump-autoload
 
+# Generate migrations
+make-migration:
+	docker-compose -f docker/docker-compose.yml exec app php expense-tracker diff
+
 # Run migrations
 migrate:
 	docker-compose -f docker/docker-compose.yml exec app php expense-tracker migrations:migrate
