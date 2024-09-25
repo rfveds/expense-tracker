@@ -11,7 +11,7 @@ use Slim\App;
 return function (App $app) {
     $app->get('/', [HomeController::class, 'index'])->add(AuthMiddleware::class);
 
-    $app->get('/login', [AuthController::class, 'loginView'])->add(AuthMiddleware::class);
+    $app->get('/login', [AuthController::class, 'loginView'])->add(GuestMiddleware::class);
     $app->get('/register', [AuthController::class, 'registerView'])->add(GuestMiddleware::class);
     $app->post('/login', [AuthController::class, 'login'])->add(GuestMiddleware::class);
     $app->post('/register', [AuthController::class, 'register'])->add(GuestMiddleware::class);

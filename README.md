@@ -14,7 +14,7 @@ App that I am building to enhance my skills in backend development with PHP.
 - [x] User Authentication 
 - [x] Form Validation with Factory Design Pattern
 - [x] Session Based Authentication
-- [ ] CSRF Protection
+- [x] CSRF Protection
 - [ ] XSS Protection
 - [ ] CRUD Actions
 - [ ] Ajax 
