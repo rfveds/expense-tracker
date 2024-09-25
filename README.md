@@ -11,9 +11,9 @@ App that I am building to enhance my skills in backend development with PHP.
 - PHPUnit
 
 #### Features
-- [ ] User Authentication 
-- [ ] Form Validation
-- [ ] Session Based Authentication
+- [x] User Authentication 
+- [x] Form Validation with Factory Design Pattern
+- [x] Session Based Authentication
 - [ ] CSRF Protection
 - [ ] XSS Protection
 - [ ] CRUD Actions

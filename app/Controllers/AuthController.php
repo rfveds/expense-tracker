@@ -5,17 +5,21 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Contracts\AuthInterface;
+use App\Contracts\RequestValidatorFactoryInterface;
+use App\DataObjects\RegisterUserData;
 use App\Exception\ValidationException;
-use Slim\Views\Twig;
+use App\RequestValidators\RegisterUserRequestValidator;
+use App\RequestValidators\UserLoginRequestValidator;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use Valitron\Validator;
+use Slim\Views\Twig;
 
-class AuthController
+readonly class AuthController
 {
     public function __construct(
-        private readonly Twig $twig,
-        private readonly AuthInterface $auth,
+        private Twig $twig,
+        private RequestValidatorFactoryInterface $requestValidatorFactory,
+        private AuthInterface $auth
     ) {
     }
 
@@ -31,23 +35,25 @@ class AuthController
 
     public function register(Request $request, Response $response): Response
     {
-        $data = $request->getParsedBody();
+        $data = $this->requestValidatorFactory->make(RegisterUserRequestValidator::class)->validate(
+            $request->getParsedBody()
+        );
 
+        $this->auth->register(
+            new RegisterUserData($data['name'], $data['email'], $data['password'])
+        );
 
-        return $response;
+        return $response->withHeader('Location', '/')->withStatus(302);
     }
 
     public function login(Request $request, Response $response): Response
     {
-        $data = $request->getParsedBody();
-
-        $v = new Validator($data);
-
-        $v->rule('required', ['email', 'password']);
-        $v->rule('email', 'email');
+        $data = $this->requestValidatorFactory->make(UserLoginRequestValidator::class)->validate(
+            $request->getParsedBody()
+        );
 
         if (!$this->auth->attemptLogin($data)) {
-            throw new ValidationException(['password' => 'Invalid email or password']);
+            throw new ValidationException(['password' => ['You have entered an invalid username or password']]);
         }
 
         return $response->withHeader('Location', '/')->withStatus(302);
@@ -55,7 +61,7 @@ class AuthController
 
     public function logout(Request $request, Response $response): Response
     {
-        $this->auth->logout();
+        $this->auth->logOut();
 
         return $response->withHeader('Location', '/')->withStatus(302);
     }

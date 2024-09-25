@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Views\Twig;
 
-class HomeController
+readonly class HomeController
 {
     public function __construct(private Twig $twig)
     {
