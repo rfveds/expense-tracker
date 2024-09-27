@@ -28,3 +28,6 @@ App that I am building to enhance my skills in backend development with PHP.
 - [ ] Caching with Redis
 - [ ] Rate Limiting
 - [ ] Uploading Files to S3 Bucket
+
+##### To do
+- [ ] create entity with ajax call
