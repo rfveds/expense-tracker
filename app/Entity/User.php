@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Contracts\UserInterface;
+use App\Traits\HasTimeStamps;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -13,16 +14,15 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\OneToMany;
-use Doctrine\ORM\Mapping\PrePersist;
-use Doctrine\ORM\Mapping\PreUpdate;
 use Doctrine\ORM\Mapping\Table;
-use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 #[Entity]
 #[Table(name: 'users')]
 #[HasLifecycleCallbacks]
 class User implements UserInterface
 {
+    use HasTimeStamps;
+
     #[Id]
     #[Column(options: ['unsigned' => true])]
     #[GeneratedValue]
@@ -36,12 +36,6 @@ class User implements UserInterface
 
     #[Column]
     private string $password;
-
-    #[Column(name: 'created_at')]
-    private \DateTime $createdAt;
-
-    #[Column(name: 'updated_at')]
-    private \DateTime $updatedAt;
 
     #[OneToMany(mappedBy: 'user', targetEntity: Transaction::class)]
     private Collection $transactions;
@@ -93,28 +87,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCreatedAt(): \DateTime
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTime $createdAt): User
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    public function getUpdatedAt(): \DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTime $updatedAt): User
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
     public function getTransactions(): Collection
     {
         return $this->transactions;
@@ -135,15 +107,5 @@ class User implements UserInterface
     {
         $this->categories->add($category);
         return $this;
-    }
-
-    #[PrePersist, PreUpdate]
-    public function updateTimestamps(LifecycleEventArgs $args): void
-    {
-        $this->setUpdatedAt(new \DateTime());
-
-        if (!isset($this->createdAt)) {
-            $this->setCreatedAt(new \DateTime());
-        }
     }
 }
