@@ -4,7 +4,7 @@ const ajax = (url, method = 'get', data = {}, domElement = null) => {
     let options = {
         method,
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type':     'application/json',
             'X-Requested-With': 'XMLHttpRequest'
         }
     }
@@ -80,7 +80,7 @@ function getCsrfFields() {
     const csrfValue = csrfValueField.content
 
     return {
-        [csrfNameKey]: csrfName,
+        [csrfNameKey]:  csrfName,
         [csrfValueKey]: csrfValue
     }
 }
