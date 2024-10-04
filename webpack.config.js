@@ -22,6 +22,7 @@ Encore
     .addEntry("app", "./resources/js/app.js")
     .addEntry("dashboard", "./resources/js/dashboard.js")
     .addEntry("categories", "./resources/js/categories.js")
+    .addEntry("transactions", "./resources/js/transactions.js")
     .addEntry("auth", "./resources/js/auth.js")
     .addEntry("ajax", "./resources/js/ajax.js")
 
@@ -57,8 +58,8 @@ Encore
     })
 
     .copyFiles({
-        from: "./resources/images",
-        to: "images/[path][name].[hash:8].[ext]",
+        from:    "./resources/images",
+        to:      "images/[path][name].[hash:8].[ext]",
         pattern: /\.(png|jpg|jpeg|gif)$/
     })
 

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Traits\HasId;
+use App\Traits\HasTimeStamps;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
@@ -15,24 +15,14 @@ use Doctrine\ORM\Mapping\Table;
 #[Table(name: 'receipts')]
 class Receipt
 {
-    #[Id]
-    #[Column(options: ['unsigned' => true])]
-    #[GeneratedValue]
-    private int $id;
+    use HasId;
+    use HasTimeStamps;
 
     #[Column(name: 'file_name')]
     private string $fileName;
 
-    #[Column(name: 'created_at')]
-    private \DateTime $createdAt;
-
     #[ManyToOne(inversedBy: 'receipts')]
     private Transaction $transaction;
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
 
     public function getFileName(): string
     {
@@ -42,17 +32,6 @@ class Receipt
     public function setFileName(string $fileName): Receipt
     {
         $this->fileName = $fileName;
-        return $this;
-    }
-
-    public function getCreatedAt(): \DateTime
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTime $createdAt): Receipt
-    {
-        $this->createdAt = $createdAt;
         return $this;
     }
 

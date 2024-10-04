@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Traits\HasId;
 use App\Traits\HasTimeStamps;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
-use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
@@ -21,12 +20,8 @@ use Doctrine\ORM\Mapping\Table;
 #[HasLifecycleCallbacks]
 class Category
 {
+    use HasId;
     use HasTimeStamps;
-
-    #[Id]
-    #[Column(options: ['unsigned' => true])]
-    #[GeneratedValue]
-    private int $id;
 
     #[Column]
     private string $name;
@@ -40,11 +35,6 @@ class Category
     public function __construct()
     {
         $this->transactions = new ArrayCollection();
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getName(): string

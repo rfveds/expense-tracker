@@ -30,4 +30,6 @@ App that I am building to enhance my skills in backend development with PHP.
 - [ ] Uploading Files to S3 Bucket
 
 ##### To do
-- [ ] create entity with ajax call
+- [ ] create category modal
+- [ ] when creating transaction, load categories with ajax
+- [ ] CategoryValidationRequest reformat
