@@ -1,10 +1,11 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 use App\Controllers\AuthController;
 use App\Controllers\CategoryController;
 use App\Controllers\HomeController;
+use App\Controllers\ReceiptController;
 use App\Controllers\TransactionController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\GuestMiddleware;
@@ -17,11 +18,11 @@ return function (App $app) {
     $app->group('', function (RouteCollectorProxy $guest) {
         $guest->get('/login', [AuthController::class, 'loginView']);
         $guest->get('/register', [AuthController::class, 'registerView']);
-        $guest->post('/login', [AuthController::class, 'login']);
+        $guest->post('/login', [AuthController::class, 'logIn']);
         $guest->post('/register', [AuthController::class, 'register']);
     })->add(GuestMiddleware::class);
 
-    $app->post('/logout', [AuthController::class, 'logout'])->add(AuthMiddleware::class);
+    $app->post('/logout', [AuthController::class, 'logOut'])->add(AuthMiddleware::class);
 
     $app->group('/categories', function (RouteCollectorProxy $categories) {
         $categories->get('', [CategoryController::class, 'index']);
@@ -39,5 +40,14 @@ return function (App $app) {
         $transactions->delete('/{id:[0-9]+}', [TransactionController::class, 'delete']);
         $transactions->get('/{id:[0-9]+}', [TransactionController::class, 'get']);
         $transactions->post('/{id:[0-9]+}', [TransactionController::class, 'update']);
+        $transactions->post('/{id:[0-9]+}/receipts', [ReceiptController::class, 'store']);
+        $transactions->get(
+            '/{transactionId:[0-9]+}/receipts/{id:[0-9]+}',
+            [ReceiptController::class, 'download']
+        );
+        $transactions->delete(
+            '/{transactionId:[0-9]+}/receipts/{id:[0-9]+}',
+            [ReceiptController::class, 'delete']
+        );
     })->add(AuthMiddleware::class);
 };

@@ -18,20 +18,26 @@ class Receipt
     use HasId;
     use HasTimeStamps;
 
-    #[Column(name: 'file_name')]
-    private string $fileName;
+    #[Column(name: 'filename')]
+    private string $filename;
 
     #[ManyToOne(inversedBy: 'receipts')]
     private Transaction $transaction;
 
-    public function getFileName(): string
+    #[Column(name: 'storage_filename')]
+    private string $storageFilename;
+
+    #[Column(name: 'media_type')]
+    private string $mediaType;
+
+    public function getFilename(): string
     {
-        return $this->fileName;
+        return $this->filename;
     }
 
-    public function setFileName(string $fileName): Receipt
+    public function setFilename(string $filename): Receipt
     {
-        $this->fileName = $fileName;
+        $this->filename = $filename;
         return $this;
     }
 
@@ -44,6 +50,30 @@ class Receipt
     {
         $transaction->addReceipt($this);
         $this->transaction = $transaction;
+        return $this;
+    }
+
+    public function getStorageFilename(): string
+    {
+        return $this->storageFilename;
+    }
+
+    public function setStorageFilename(string $storageFilename): Receipt
+    {
+        $this->storageFilename = $storageFilename;
+
+        return $this;
+    }
+
+    public function getMediaType(): string
+    {
+        return $this->mediaType;
+    }
+
+    public function setMediaType(string $mediaType): Receipt
+    {
+        $this->mediaType = $mediaType;
+
         return $this;
     }
 }
