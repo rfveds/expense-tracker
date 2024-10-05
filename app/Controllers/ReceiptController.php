@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace App\Controllers;
 
 use App\Contracts\RequestValidatorFactoryInterface;
-use App\RequestValidators\UploadReceiptRequestValidator;
+use App\RequestValidators\Receipt\UploadReceiptRequestValidator;
 use App\Services\ReceiptService;
 use App\Services\TransactionService;
 use League\Flysystem\Filesystem;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\UploadedFileInterface;
 use Slim\Psr7\Stream;
 

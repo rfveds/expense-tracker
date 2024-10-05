@@ -6,13 +6,12 @@ namespace App\Controllers;
 
 use App\Contracts\RequestValidatorFactoryInterface;
 use App\Entity\Category;
-use App\RequestValidators\CreateCategoryRequestValidator;
-use App\RequestValidators\UpdateCategoryRequestValidator;
+use App\RequestValidators\Category\CategoryRequestValidator;
 use App\ResponseFormatter;
 use App\Services\CategoryService;
 use App\Services\RequestService;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
 
 readonly class CategoryController
@@ -33,7 +32,7 @@ readonly class CategoryController
 
     public function store(Request $request, Response $response): Response
     {
-        $data = $this->requestValidatorFactory->make(CreateCategoryRequestValidator::class)->validate(
+        $data = $this->requestValidatorFactory->make(CategoryRequestValidator::class)->validate(
             $request->getParsedBody()
         );
 
@@ -64,7 +63,7 @@ readonly class CategoryController
 
     public function update(Request $request, Response $response, array $args): Response
     {
-        $data = $this->requestValidatorFactory->make(UpdateCategoryRequestValidator::class)->validate(
+        $data = $this->requestValidatorFactory->make(CategoryRequestValidator::class)->validate(
             $args + $request->getParsedBody()
         );
 

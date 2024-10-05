@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\RequestValidators;
+namespace App\RequestValidators\Category;
 
 use App\Contracts\RequestValidatorInterface;
 use App\Exception\ValidationException;
 use Valitron\Validator;
 
-class UpdateCategoryRequestValidator implements RequestValidatorInterface
+class CategoryRequestValidator implements RequestValidatorInterface
 {
     public function validate(array $data): array
     {
@@ -16,7 +16,6 @@ class UpdateCategoryRequestValidator implements RequestValidatorInterface
 
         $v->rule('required', 'name');
         $v->rule('lengthMax', 'name', 50);
-        $v->rule('integer', 'id');
 
         if (!$v->validate()) {
             throw new ValidationException($v->errors());

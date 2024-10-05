@@ -7,13 +7,12 @@ namespace App\Controllers;
 use App\Contracts\RequestValidatorFactoryInterface;
 use App\DataObjects\TransactionData;
 use App\Entity\transaction;
-use App\RequestValidators\TransactionRequestValidator;
+use App\RequestValidators\Transaction\TransactionRequestValidator;
 use App\ResponseFormatter;
-use App\Services\CategoryService;
 use App\Services\RequestService;
 use App\Services\TransactionService;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
 
 readonly class TransactionController
