@@ -8,11 +8,13 @@ use App\Traits\HasId;
 use App\Traits\HasTimeStamps;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 
 #[Entity]
 #[Table(name: 'receipts')]
+#[HasLifecycleCallbacks]
 class Receipt
 {
     use HasId;
