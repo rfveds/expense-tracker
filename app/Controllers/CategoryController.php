@@ -101,4 +101,12 @@ readonly class CategoryController
             $totalCategories
         );
     }
+
+    public function getCategoriesNames(Request $request, Response $response): Response
+    {
+        return $this->responseFormatter->asJson(
+            $response,
+            $this->categoryService->getCategoryNames(),
+        );
+    }
 }

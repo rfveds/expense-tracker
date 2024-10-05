@@ -15,11 +15,11 @@ App that I am building to enhance my skills in backend development with PHP.
 - [x] Form Validation with Factory Design Pattern
 - [x] Session Based Authentication
 - [x] CSRF Protection
-- [ ] XSS Protection
-- [ ] CRUD Actions
-- [ ] Ajax 
-- [ ] DataTables & Pagination
-- [ ] Sorting & Filtering
+- [x] XSS Protection
+- [x] CRUD Actions
+- [x] Ajax 
+- [x] DataTables & Pagination
+- [x] Sorting & Filtering
 - [ ] Profiling for N+1 Queries
 - [ ] Route Model Binding with Slim
 - [ ] Authorization with Doctrine Filters
@@ -31,7 +31,7 @@ App that I am building to enhance my skills in backend development with PHP.
 
 ##### To do
 - [x] create category modal
-- [ ] when creating transaction, load categories with ajax
+- [x] when creating transaction, load categories with ajax
 - [ ] CategoryValidationRequest reformat
 - [ ] move file upload to separate service
 - [ ] delete receipts modal

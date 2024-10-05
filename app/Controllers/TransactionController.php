@@ -24,7 +24,6 @@ readonly class TransactionController
         private ResponseFormatter $responseFormatter,
         private RequestService $requestService,
         private TransactionService $transactionService,
-        private CategoryService $categoryService
     ) {
     }
 
@@ -33,7 +32,6 @@ readonly class TransactionController
         return $this->twig->render(
             $response,
             'transactions/index.twig',
-            ['categories' => $this->categoryService->getCategoryNames()]
         );
     }
 

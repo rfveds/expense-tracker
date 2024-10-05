@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 use App\Controllers\AuthController;
 use App\Controllers\CategoryController;
@@ -31,6 +31,7 @@ return function (App $app) {
         $categories->delete('/{id:[0-9]+}', [CategoryController::class, 'delete']);
         $categories->get('/{id:[0-9]+}', [CategoryController::class, 'get']);
         $categories->post('/{id:[0-9]+}', [CategoryController::class, 'update']);
+        $categories->get('/names', [CategoryController::class, 'getCategoriesNames']);
     })->add(AuthMiddleware::class);
 
     $app->group('/transactions', function (RouteCollectorProxy $transactions) {

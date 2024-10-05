@@ -22,11 +22,11 @@
                            placeholder="$ Amount" />
                 </div>
                 <div class="form-outline form-white mb-4">
-                    <select class="form-select form-select-lg" aria-label="Category" name="category">
-                        <option value="">Select Category</option>
-                        {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.name }}</option>
-                        {% endfor %}
+                    <select class="form-select form-select-lg" aria-label="Category" name="category" id="categorySelect">
+{#                        <option value="">Select Category</option>#}
+{#                        {% for category in categories %}#}
+{#                            <option value="{{ category.id }}">{{ category.name }}</option>#}
+{#                        {% endfor %}#}
                     </select>
                 </div>
             </div>

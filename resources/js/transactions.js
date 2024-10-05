@@ -26,41 +26,41 @@ window.addEventListener('DOMContentLoaded', function () {
                 ).format(row.amount)
             },
             {data: "category"},
-            {
-                data: row => {
-                    let icons = []
-
-                    for (let i = 0; i < row.receipts.length; i++) {
-                        const receipt = row.receipts[i]
-
-                        const span = document.createElement('span')
-                        const anchor = document.createElement('a')
-                        const icon = document.createElement('i')
-                        const deleteIcon = document.createElement('i')
-
-                        deleteIcon.role = 'button'
-
-                        span.classList.add('position-relative')
-                        icon.classList.add('bi', 'bi-file-earmark-text', 'download-receipt', 'text-primary', 'fs-4')
-                        deleteIcon.classList.add('bi', 'bi-x-circle-fill', 'delete-receipt', 'text-danger', 'position-absolute')
-
-                        anchor.href = `/transactions/${row.id}/receipts/${receipt.id}`
-                        anchor.target = 'blank'
-                        anchor.title = receipt.name
-
-                        deleteIcon.setAttribute('data-id', receipt.id)
-                        deleteIcon.setAttribute('data-transactionId', row.id)
-
-                        anchor.append(icon)
-                        span.append(anchor)
-                        span.append(deleteIcon)
-
-                        icons.push(span.outerHTML)
-                    }
-
-                    return icons.join('')
-                }
-            },
+            // {
+            //     data: row => {
+            //         let icons = []
+            //
+            //         for (let i = 0; i < row.receipts.length; i++) {
+            //             const receipt = row.receipts[i]
+            //
+            //             const span = document.createElement('span')
+            //             const anchor = document.createElement('a')
+            //             const icon = document.createElement('i')
+            //             const deleteIcon = document.createElement('i')
+            //
+            //             deleteIcon.role = 'button'
+            //
+            //             span.classList.add('position-relative')
+            //             icon.classList.add('bi', 'bi-file-earmark-text', 'download-receipt', 'text-primary', 'fs-4')
+            //             deleteIcon.classList.add('bi', 'bi-x-circle-fill', 'delete-receipt', 'text-danger', 'position-absolute')
+            //
+            //             anchor.href = `/transactions/${row.id}/receipts/${receipt.id}`
+            //             anchor.target = 'blank'
+            //             anchor.title = receipt.name
+            //
+            //             deleteIcon.setAttribute('data-id', receipt.id)
+            //             deleteIcon.setAttribute('data-transactionId', row.id)
+            //
+            //             anchor.append(icon)
+            //             span.append(anchor)
+            //             span.append(deleteIcon)
+            //
+            //             icons.push(span.outerHTML)
+            //         }
+            //
+            //         return icons.join('')
+            //     }
+            // },
             {data: "date"},
             {
                 sortable: false,
@@ -79,6 +79,20 @@ window.addEventListener('DOMContentLoaded', function () {
                 `
             }
         ]
+    })
+
+    document.querySelector('#newTransactionModal').addEventListener('shown.bs.modal', function () {
+        const categorySelect = this.querySelector('#categorySelect');
+        loadCategories(categorySelect).catch(error => {
+            console.error('Failed to load categories for new transaction:', error);
+        });
+    })
+
+    document.querySelector('#editTransactionModal').addEventListener('shown.bs.modal', function () {
+        const categorySelect = this.querySelector('#categorySelect');
+        loadCategories(categorySelect).catch(error => {
+            console.error('Failed to load categories for edit transaction:', error);
+        });
     })
 
     document.querySelector('#transactionsTable').addEventListener('click', function (event) {
@@ -181,14 +195,46 @@ function getTransactionFormData(modal) {
     return data
 }
 
-function openEditTransactionModal(modal, {id, ...data}) {
-    for (let name in data) {
-        const nameInput = modal._element.querySelector(`[name="${name}"]`)
+async function openEditTransactionModal(modal, {id, ...data}) {
+    try {
+        const categorySelect = modal._element.querySelector('#categorySelect');
+        await loadCategories(categorySelect);
 
-        nameInput.value = data[name]
+        for (let name in data) {
+            const input = modal._element.querySelector(`[name="${name}"]`)
+            if (input) {
+                input.value = data[name]
+            }
+        }
+
+        modal._element.querySelector('.save-transaction-btn').setAttribute('data-id', id)
+
+        modal.show()
+    } catch (error) {
+        console.error('Error opening edit transaction modal:', error);
     }
+}
 
-    modal._element.querySelector('.save-transaction-btn').setAttribute('data-id', id)
+async function loadCategories(selectElement) {
+    try {
+        const response = await get('/categories/names');
+        const categories = await response.json();
 
-    modal.show()
+        selectElement.innerHTML = '';
+
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Select Category';
+        selectElement.appendChild(defaultOption);
+
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.id;
+            option.textContent = category.name;
+            selectElement.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error loading categories:', error);
+        throw error;
+    }
 }
