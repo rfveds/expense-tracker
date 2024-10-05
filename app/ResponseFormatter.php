@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App;
 
 use Psr\Http\Message\ResponseInterface;
+use Slim\Psr7\Stream;
 
 class ResponseFormatter
 {
@@ -31,5 +32,16 @@ class ResponseFormatter
                 'recordsFiltered' => $total,
             ]
         );
+    }
+
+    public function asFile(ResponseInterface $response, string $filename, string $mediaType, $file): ResponseInterface
+    {
+        return $response
+            ->withHeader(
+                'Content-Disposition',
+                'inline; filename="' . $filename . '"'
+            )
+            ->withHeader('Content-Type', $mediaType)
+            ->withBody(new Stream($file));
     }
 }
