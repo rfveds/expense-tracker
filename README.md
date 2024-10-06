@@ -23,7 +23,7 @@ App that I am building to enhance my skills in backend development with PHP.
 - [x] DataTables & Pagination
 - [x] Sorting & Filtering
 - [x] Eager Loading with Doctrine to prevent N+1 Problem
-- [ ] Route Model Binding with Slim
+- [x] Route Model Binding with Slim
 - [ ] Authorization with Doctrine Filters
 - [ ] Email Verification
 - [ ] Two-Factor Auh
