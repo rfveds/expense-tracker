@@ -13,7 +13,7 @@ readonly class TransactionData
         public string $description,
         public float $amount,
         public DateTime $date,
-        public Category $category
+        public ?Category $category
     ) {
     }
 }
