@@ -23,12 +23,12 @@ readonly class AuthController
     ) {
     }
 
-    public function loginView(Request $request, Response $response): Response
+    public function loginView(Response $response): Response
     {
         return $this->twig->render($response, 'auth/login.twig');
     }
 
-    public function registerView(Request $request, Response $response): Response
+    public function registerView(Response $response): Response
     {
         return $this->twig->render($response, 'auth/register.twig');
     }
@@ -59,7 +59,7 @@ readonly class AuthController
         return $response->withHeader('Location', '/')->withStatus(302);
     }
 
-    public function logout(Request $request, Response $response): Response
+    public function logout(Response $response): Response
     {
         $this->auth->logOut();
 
