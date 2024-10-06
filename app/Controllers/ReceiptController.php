@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Contracts\EntityManagerServiceInterface;
 use App\Contracts\RequestValidatorFactoryInterface;
 use App\RequestValidators\Receipt\UploadReceiptRequestValidator;
 use App\ResponseFormatter;
@@ -23,7 +24,8 @@ readonly class ReceiptController
         private ReceiptService $receiptService,
         private TransactionService $transactionService,
         private ResponseFormatter $responseFormatter,
-        private FileService $fileService
+        private FileService $fileService,
+        private EntityManagerServiceInterface $entityManagerService
     ) {
     }
 
@@ -42,13 +44,14 @@ readonly class ReceiptController
 
         $randomFilename = $this->fileService->save($file);
 
-        $this->receiptService->create(
+        $receipt = $this->receiptService->create(
             $transaction,
             $file->getClientFilename(),
             $randomFilename,
             $file->getClientMediaType()
         );
-        $this->receiptService->flush();
+
+        $this->entityManagerService->sync($receipt);
 
         return $response;
     }
@@ -80,14 +83,14 @@ readonly class ReceiptController
 
     public function delete(Request $request, Response $response, array $args): Response
     {
-        $transactionId = (int) $args['transactionId'];
-        $receiptId     = (int) $args['id'];
+        $transactionId = (int)$args['transactionId'];
+        $receiptId     = (int)$args['id'];
 
-        if (! $transactionId || ! $this->transactionService->getById($transactionId)) {
+        if (!$transactionId || !$this->transactionService->getById($transactionId)) {
             return $response->withStatus(404);
         }
 
-        if (! $receiptId || ! ($receipt = $this->receiptService->getById($receiptId))) {
+        if (!$receiptId || !($receipt = $this->receiptService->getById($receiptId))) {
             return $response->withStatus(404);
         }
 
@@ -97,8 +100,7 @@ readonly class ReceiptController
 
         $this->filesystem->delete('receipts/' . $receipt->getStorageFilename());
 
-        $this->receiptService->delete($receipt);
-        $this->receiptService->flush();
+        $this->entityManagerService->delete($receipt, true);
 
         return $response;
     }

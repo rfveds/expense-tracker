@@ -27,6 +27,9 @@ class Transaction
     #[Column]
     private string $description;
 
+    #[Column(name: 'was_reviewed', options: ['default' => 0])]
+    private bool $wasReviewed;
+
     #[Column(type: Types::DECIMAL, precision: 13, scale: 3)]
     private float $amount;
 
@@ -34,7 +37,7 @@ class Transaction
     private \DateTime $date;
 
     #[ManyToOne(inversedBy: 'transactions')]
-    private User $user;
+    private User      $user;
     #[ManyToOne(inversedBy: 'transactions')]
     private ?Category $category;
 
@@ -43,7 +46,8 @@ class Transaction
 
     public function __construct()
     {
-        $this->receipts = new ArrayCollection();
+        $this->receipts    = new ArrayCollection();
+        $this->wasReviewed = false;
     }
 
     public function getDescription(): string
@@ -109,6 +113,17 @@ class Transaction
     public function addReceipt(Receipt $receipt): Transaction
     {
         $this->receipts->add($receipt);
+        return $this;
+    }
+
+    public function WasReviewed(): bool
+    {
+        return $this->wasReviewed;
+    }
+
+    public function setReviewed(bool $wasReviewed): Transaction
+    {
+        $this->wasReviewed = $wasReviewed;
         return $this;
     }
 

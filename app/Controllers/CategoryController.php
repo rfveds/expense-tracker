@@ -21,7 +21,8 @@ readonly class CategoryController
         private RequestValidatorFactoryInterface $requestValidatorFactory,
         private CategoryService $categoryService,
         private ResponseFormatter $responseFormatter,
-        private RequestService $requestService
+        private RequestService $requestService,
+        private EntityManagerServiceInterface $entityManagerService
     ) {
     }
 
@@ -36,16 +37,15 @@ readonly class CategoryController
             $request->getParsedBody()
         );
 
-        $this->categoryService->create($data['name'], $request->getAttribute('user'));
-        $this->categoryService->flush();
+        $category = $this->categoryService->create($data['name'], $request->getAttribute('user'));
+        $this->entityManagerService->sync($category);
 
         return $response->withHeader('Location', '/categories')->withStatus(302);
     }
 
     public function delete(Request $request, Response $response, array $args): Response
     {
-        $this->categoryService->delete((int)$args['id']);
-        $this->categoryService->flush();
+        $this->entityManagerService->delete($this->categoryService->getById((int)$args['id']), true);
 
         return $response;
     }
@@ -75,8 +75,7 @@ readonly class CategoryController
             return $response->withStatus(404);
         }
 
-        $this->categoryService->update($category, $data['name']);
-        $this->categoryService->flush();
+        $this->entityManagerService->sync($this->categoryService->update($category, $data['name']));
 
         return $response;
     }

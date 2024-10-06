@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Auth;
 use App\Config;
 use App\Contracts\AuthInterface;
+use App\Contracts\EntityManagerServiceInterface;
 use App\Contracts\RequestValidatorFactoryInterface;
 use App\Contracts\SessionInterface;
 use App\Contracts\UserProviderServiceInterface;
@@ -14,6 +15,7 @@ use App\Enum\AppEnvironment;
 use App\Enum\SameSite;
 use App\Enum\StorageDriver;
 use App\RequestValidators\RequestValidatorFactory;
+use App\Services\EntityManagerService;
 use App\Services\UserProviderService;
 use App\Session;
 use Clockwork\DataSource\DoctrineDataSource;
@@ -57,7 +59,9 @@ return [
 
         return $app;
     },
-    Config::class                           => create(Config::class)->constructor(require CONFIG_PATH . '/app.php'),
+    Config::class                           => create(Config::class)->constructor(
+        require CONFIG_PATH . '/app.php'
+    ),
     EntityManagerInterface::class           => function (Config $config) {
         $ormConfig = ORMSetup::createAttributeMetadataConfiguration(
             $config->get('doctrine.entity_dir'),
@@ -92,7 +96,9 @@ return [
         $container->get('webpack_encore.packages')
     ),
     ResponseFactoryInterface::class         => fn(App $app) => $app->getResponseFactory(),
-    AuthInterface::class                    => fn(ContainerInterface $container) => $container->get(Auth::class),
+    AuthInterface::class                    => fn(ContainerInterface $container) => $container->get(
+        Auth::class
+    ),
     UserProviderServiceInterface::class     => fn(ContainerInterface $container) => $container->get(
         UserProviderService::class
     ),
@@ -108,7 +114,10 @@ return [
     RequestValidatorFactoryInterface::class => fn(ContainerInterface $container) => $container->get(
         RequestValidatorFactory::class
     ),
-    'csrf'                                  => fn(ResponseFactoryInterface $responseFactory, Csrf $csrf) => new Guard(
+    'csrf'                                  => fn(
+        ResponseFactoryInterface $responseFactory,
+        Csrf $csrf
+    ) => new Guard(
         $responseFactory,
         failureHandler: $csrf->failureHandler(),
         persistentTokenMode: true
@@ -129,4 +138,7 @@ return [
 
         return $clockwork;
     },
+    EntityManagerServiceInterface::class    => fn(EntityManagerInterface $entityManager) => new EntityManagerService(
+        $entityManager
+    ),
 ];

@@ -1,19 +1,24 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Services;
 
+use App\Contracts\EntityManagerServiceInterface;
 use App\Contracts\UserInterface;
 use App\Contracts\UserProviderServiceInterface;
 use App\DataObjects\RegisterUserData;
 use App\Entity\User;
 
-readonly class UserProviderService extends EntityManagerService implements UserProviderServiceInterface
+class UserProviderService implements UserProviderServiceInterface
 {
+    public function __construct(private readonly EntityManagerServiceInterface $entityManager)
+    {
+    }
+
     public function findById(int $id): ?UserInterface
     {
-        return $this->entityManager->getRepository(User::class)->findOneBy(['id' => $id]);
+        return $this->entityManager->find(User::class, $id);
     }
 
     public function findByCredentials(array $credentials): ?UserInterface
@@ -29,8 +34,7 @@ readonly class UserProviderService extends EntityManagerService implements UserP
         $user->setEmail($data->email);
         $user->setPassword(password_hash($data->password, PASSWORD_BCRYPT, ['cost' => 12]));
 
-
-        $this->entityManager->persist($user);
+        $this->entityManager->sync($user);
 
         return $user;
     }

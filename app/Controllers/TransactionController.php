@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Contracts\EntityManagerServiceInterface;
 use App\Contracts\RequestValidatorFactoryInterface;
 use App\DataObjects\TransactionData;
 use App\Entity\Receipt;
@@ -24,6 +25,7 @@ readonly class TransactionController
         private ResponseFormatter $responseFormatter,
         private RequestService $requestService,
         private TransactionService $transactionService,
+        private EntityManagerServiceInterface $entityManagerService
     ) {
     }
 
@@ -41,7 +43,7 @@ readonly class TransactionController
             $request->getParsedBody()
         );
 
-        $this->transactionService->create(
+        $transaction = $this->transactionService->create(
             new TransactionData(
                 $data['description'],
                 (float)$data['amount'],
@@ -50,16 +52,15 @@ readonly class TransactionController
             ),
             $request->getAttribute('user'),
         );
-        $this->transactionService->flush();
+
+        $this->entityManagerService->sync($transaction);
 
         return $response->withHeader('Location', '/categories')->withStatus(302);
     }
 
     public function delete(Request $request, Response $response, array $args): Response
     {
-        $this->transactionService->delete((int)$args['id']);
-        $this->transactionService->flush();
-
+        $this->entityManagerService->delete($this->transactionService->getById((int)$args['id']), true);
         return $response;
     }
 
@@ -94,16 +95,17 @@ readonly class TransactionController
             return $response->withStatus(404);
         }
 
-        $this->transactionService->update(
-            $transaction,
-            new TransactionData(
-                $data['description'],
-                (float)$data['amount'],
-                new \DateTime($data['date']),
-                $data['category']
+        $this->entityManagerService->sync(
+            $this->transactionService->update(
+                $transaction,
+                new TransactionData(
+                    $data['description'],
+                    (float)$data['amount'],
+                    new \DateTime($data['date']),
+                    $data['category']
+                )
             )
         );
-        $this->transactionService->flush();
 
         return $response;
     }
@@ -119,6 +121,7 @@ readonly class TransactionController
                 'amount'      => $transaction->getAmount(),
                 'date'        => $transaction->getDate()->format('m/d/Y g:i A'),
                 'category'    => $transaction->getCategory()?->getName(),
+                'wasReviewed' => $transaction->wasReviewed(),
                 'receipts'    => $transaction->getReceipts()->map(fn(Receipt $receipt) => [
                     'name' => $receipt->getFilename(),
                     'id'   => $receipt->getId(),
@@ -134,5 +137,19 @@ readonly class TransactionController
             $params->draw,
             $totalTransactions
         );
+    }
+
+    public function toggleReviewed(Request $request, Response $response, array $args): Response
+    {
+        $id = (int)$args['id'];
+
+        if (!$id || !($transaction = $this->transactionService->getById($id))) {
+            return $response->withStatus(404);
+        }
+
+        $this->transactionService->toggleReviewed($transaction);
+        $this->entityManagerService->sync();
+
+        return $response;
     }
 }

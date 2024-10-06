@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Contracts\EntityManagerServiceInterface;
 use App\DataObjects\TransactionData;
 use App\Entity\Transaction;
 use App\Entity\User;
@@ -13,7 +14,7 @@ readonly class ImportTransactionService
     public function __construct(
         private CategoryService $categoryService,
         private TransactionService $transactionService,
-        private EntityManagerService $entityManagerService
+        private EntityManagerServiceInterface $entityManagerService
     ) {
     }
 
@@ -33,14 +34,13 @@ readonly class ImportTransactionService
             $category = $categories[strtolower($category)] ?? null;
             $amount   = str_replace(['$', ','], '', $amount);
 
-            $transactionData = new TransactionData($description, (float) $amount, $date, $category);
+            $transactionData = new TransactionData($description, (float)$amount, $date, $category);
 
             $this->transactionService->create($transactionData, $user);
 
             if ($count % $batchSize === 0) {
-                $this->entityManagerService->flush();
+                $this->entityManagerService->sync();
                 $this->entityManagerService->clear(Transaction::class);
-
                 $count = 1;
             } else {
                 $count++;
@@ -48,7 +48,7 @@ readonly class ImportTransactionService
         }
 
         if ($count > 1) {
-            $this->entityManagerService->flush();
+            $this->entityManagerService->sync();
             $this->entityManagerService->clear();
         }
     }
