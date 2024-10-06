@@ -26,7 +26,7 @@ App that I am building to enhance my skills in backend development with PHP.
 - [x] Route Model Binding with Slim
 - [ ] Authorization with Doctrine Filters
 - [ ] Email Verification
-- [ ] Two-Factor Auh
+- [ ] Two-Factor Authentication
 - [ ] Caching with Redis
 - [ ] Rate Limiting
 - [ ] Uploading Files to S3 Bucket

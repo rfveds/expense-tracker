@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Contracts\OwnableInterface;
 use App\Traits\HasId;
 use App\Traits\HasTimeStamps;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,7 +19,7 @@ use Doctrine\ORM\Mapping\Table;
 #[Entity]
 #[Table(name: 'categories')]
 #[HasLifecycleCallbacks]
-class Category
+class Category implements OwnableInterface
 {
     use HasId;
     use HasTimeStamps;

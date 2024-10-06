@@ -14,6 +14,7 @@ use App\DataObjects\SessionConfig;
 use App\Enum\AppEnvironment;
 use App\Enum\SameSite;
 use App\Enum\StorageDriver;
+use App\Filters\UserFilter;
 use App\RequestValidators\RequestValidatorFactory;
 use App\RouteEntityBindingStrategy;
 use App\Services\EntityManagerService;
@@ -75,6 +76,8 @@ return [
             $config->get('doctrine.entity_dir'),
             $config->get('doctrine.dev_mode')
         );
+
+        $ormConfig->addFilter('user', UserFilter::class);
 
         return new EntityManager(
             DriverManager::getConnection($config->get('doctrine.connection'), $ormConfig),
