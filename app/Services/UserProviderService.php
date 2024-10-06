@@ -10,9 +10,9 @@ use App\Contracts\UserProviderServiceInterface;
 use App\DataObjects\RegisterUserData;
 use App\Entity\User;
 
-class UserProviderService implements UserProviderServiceInterface
+readonly class UserProviderService implements UserProviderServiceInterface
 {
-    public function __construct(private readonly EntityManagerServiceInterface $entityManager)
+    public function __construct(private EntityManagerServiceInterface $entityManager)
     {
     }
 
