@@ -33,7 +33,7 @@ App that I am building to enhance my skills in backend development with PHP.
 - [x] create category modal
 - [x] when creating transaction, load categories with ajax
 - [x] CategoryValidationRequest reformat
-- [ ] move file upload to separate service
-- [ ] delete receipts modal
-- [ ] import csv file and save as transaction
+- [x] move file upload to separate service
+- [x] delete receipts
+- [x] import csv file and save as transaction
 - [ ] import and store csv file
