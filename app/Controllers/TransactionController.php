@@ -50,6 +50,7 @@ readonly class TransactionController
             ),
             $request->getAttribute('user'),
         );
+        $this->transactionService->flush();
 
         return $response->withHeader('Location', '/categories')->withStatus(302);
     }
@@ -57,6 +58,7 @@ readonly class TransactionController
     public function delete(Request $request, Response $response, array $args): Response
     {
         $this->transactionService->delete((int)$args['id']);
+        $this->transactionService->flush();
 
         return $response;
     }
@@ -101,6 +103,7 @@ readonly class TransactionController
                 $data['category']
             )
         );
+        $this->transactionService->flush();
 
         return $response;
     }

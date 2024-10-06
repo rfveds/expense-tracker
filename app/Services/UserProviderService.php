@@ -8,16 +8,9 @@ use App\Contracts\UserInterface;
 use App\Contracts\UserProviderServiceInterface;
 use App\DataObjects\RegisterUserData;
 use App\Entity\User;
-use Doctrine\ORM\EntityManager;
 
-readonly class UserProviderService implements UserProviderServiceInterface
+readonly class UserProviderService extends EntityManagerService implements UserProviderServiceInterface
 {
-
-    public function __construct(
-        private EntityManager $entityManager,
-    ) {
-    }
-
     public function findById(int $id): ?UserInterface
     {
         return $this->entityManager->getRepository(User::class)->findOneBy(['id' => $id]);
@@ -38,7 +31,6 @@ readonly class UserProviderService implements UserProviderServiceInterface
 
 
         $this->entityManager->persist($user);
-        $this->entityManager->flush();
 
         return $user;
     }

@@ -48,6 +48,7 @@ readonly class ReceiptController
             $randomFilename,
             $file->getClientMediaType()
         );
+        $this->receiptService->flush();
 
         return $response;
     }
@@ -97,6 +98,7 @@ readonly class ReceiptController
         $this->filesystem->delete('receipts/' . $receipt->getStorageFilename());
 
         $this->receiptService->delete($receipt);
+        $this->receiptService->flush();
 
         return $response;
     }

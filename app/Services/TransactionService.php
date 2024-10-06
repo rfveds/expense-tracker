@@ -11,12 +11,8 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-readonly class TransactionService
+readonly class TransactionService extends EntityManagerService
 {
-    public function __construct(private EntityManager $entityManager)
-    {
-    }
-
     public function create(TransactionData $transactionData, User $user): Transaction
     {
         $transaction = new Transaction();
@@ -61,7 +57,6 @@ readonly class TransactionService
         $transaction = $this->entityManager->find(Transaction::class, $id);
 
         $this->entityManager->remove($transaction);
-        $this->entityManager->flush();
     }
 
     public function getById(int $id): ?Transaction
@@ -77,7 +72,6 @@ readonly class TransactionService
         $transaction->setCategory($transactionData->category);
 
         $this->entityManager->persist($transaction);
-        $this->entityManager->flush();
 
         return $transaction;
     }
