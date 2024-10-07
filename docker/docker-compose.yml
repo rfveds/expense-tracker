@@ -8,6 +8,8 @@ services:
     working_dir: /var/www/
     volumes:
       - ../:/var/www
+    networks:
+      - expense-tracker-network
   nginx:
     image: nginx:1.27.1-alpine
     container_name: expense-tracker-nginx
@@ -17,6 +19,8 @@ services:
     volumes:
       - ../:/var/www
       - ./nginx:/etc/nginx/conf.d
+    networks:
+        - expense-tracker-network
   db:
     container_name: expense-tracker-db
     image: mysql:8.0
@@ -27,6 +31,19 @@ services:
       MYSQL_ROOT_PASSWORD: root
     ports:
       - "3306:3306"
+    networks:
+        - expense-tracker-network
+  mailhog:
+    container_name: expense-tracker-mailhog
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    restart: always
+    networks:
+      - expense-tracker-network
+    logging:
+      driver: "none"
 
 networks:
   expense-tracker-network:

@@ -24,8 +24,8 @@ App that I am building to enhance my skills in backend development with PHP.
 - [x] Sorting & Filtering
 - [x] Eager Loading with Doctrine to prevent N+1 Problem
 - [x] Route Model Binding with Slim
-- [ ] Authorization with Doctrine Filters
-- [ ] Email Verification
+- [x] Authorization with Doctrine Filters
+- [x] Email Verification
 - [ ] Two-Factor Authentication
 - [ ] Caching with Redis
 - [ ] Rate Limiting

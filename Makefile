@@ -46,3 +46,7 @@ npm-watch:
 # Build assets for production
 npm-build:
 	docker-compose -f docker/docker-compose.yml exec app npm run build
+
+# Generate a new application key
+generate-key:
+	docker-compose -f docker/docker-compose.yml exec app php expense-tracker app:generate-key

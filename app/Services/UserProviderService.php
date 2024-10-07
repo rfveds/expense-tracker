@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Services;
 
@@ -37,5 +37,12 @@ readonly class UserProviderService implements UserProviderServiceInterface
         $this->entityManager->sync($user);
 
         return $user;
+    }
+
+    public function verifyUser(UserInterface $user): void
+    {
+        $user->setVerifiedAt(new \DateTime());
+
+        $this->entityManager->sync($user);
     }
 }
