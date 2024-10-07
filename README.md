@@ -26,9 +26,9 @@ App that I am building to enhance my skills in backend development with PHP.
 - [x] Route Model Binding with Slim
 - [x] Authorization with Doctrine Filters
 - [x] Email Verification
-- [ ] Two-Factor Authentication
-- [ ] Caching with Redis
-- [ ] Rate Limiting
+- [x] Two-Factor Authentication
+- [x] Caching with Redis
+- [x] Rate Limiting
 - [ ] Uploading Files to S3 Bucket
 
 ##### To do
@@ -40,7 +40,10 @@ App that I am building to enhance my skills in backend development with PHP.
 - [x] delete receipts
 - [x] import csv file and save as transaction
 - [ ] import and store csv file
-- [ ] enable/disable 2fa in user profile
+- [x] enable/disable 2fa in user profile
+- [x] current route middleware
+- [ ] add data fixtures
+- [ ] date picker for dashboard statistics
 
 #### Bugs
 

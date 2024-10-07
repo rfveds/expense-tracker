@@ -8,17 +8,16 @@
   },
   "devDependencies": {
     "@popperjs/core": "^2.11.6",
-    "@symfony/webpack-encore": "^4.0.0",
+    "@symfony/webpack-encore": "^5.0.1",
     "bootstrap": "^5.2.1",
-    "file-loader": "^6.2.0",
-    "sass": "^1.54.9",
-    "sass-loader": "^13.0.2",
-    "webpack-notifier": "^1.15.0"
-  },
-  "dependencies": {
     "bootstrap-icons": "^1.11.3",
+    "chart.js": "^4.4.4",
     "core-js": "^3.38.1",
     "datatables.net": "^2.1.7",
-    "datatables.net-dt": "^2.1.7"
+    "datatables.net-dt": "^2.1.7",
+    "file-loader": "^6.2.0",
+    "sass": "^1.54.9",
+    "sass-loader": "^16.0.2",
+    "webpack-notifier": "^1.15.0"
   }
 }

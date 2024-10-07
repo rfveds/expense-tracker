@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Config;
 use App\Enum\AppEnvironment;
 use App\Middleware\CsrfFieldsMiddleware;
+use App\Middleware\CurrentRouteMiddleware;
 use App\Middleware\OldFormDataMiddleware;
 use App\Middleware\StartSessionMiddleware;
 use App\Middleware\ValidationErrorsMiddleware;
