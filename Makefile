@@ -29,7 +29,7 @@ make-migration:
 
 # Run migrations
 migrate:
-	docker-compose -f docker/docker-compose.yml exec app php expense-tracker migrations:migrate
+	docker-compose -f docker/docker-compose.yml exec app php expense-tracker migrations:migrate --no-interaction
 
 # Install npm dependencies
 npm-install:

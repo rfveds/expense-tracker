@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Services;
 
@@ -12,16 +12,18 @@ use App\Entity\User;
 
 readonly class UserProviderService implements UserProviderServiceInterface
 {
-    public function __construct(private EntityManagerServiceInterface $entityManager)
-    {
+    public function __construct(
+        private EntityManagerServiceInterface $entityManager,
+        private HashService $hashService
+    ) {
     }
 
-    public function findById(int $id): ?UserInterface
+    public function getById(int $userId): ?UserInterface
     {
-        return $this->entityManager->find(User::class, $id);
+        return $this->entityManager->find(User::class, $userId);
     }
 
-    public function findByCredentials(array $credentials): ?UserInterface
+    public function getByCredentials(array $credentials): ?UserInterface
     {
         return $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
     }
@@ -32,7 +34,7 @@ readonly class UserProviderService implements UserProviderServiceInterface
 
         $user->setName($data->name);
         $user->setEmail($data->email);
-        $user->setPassword(password_hash($data->password, PASSWORD_BCRYPT, ['cost' => 12]));
+        $user->setPassword($this->hashService->hashPassword($data->password));
 
         $this->entityManager->sync($user);
 
@@ -42,6 +44,13 @@ readonly class UserProviderService implements UserProviderServiceInterface
     public function verifyUser(UserInterface $user): void
     {
         $user->setVerifiedAt(new \DateTime());
+
+        $this->entityManager->sync($user);
+    }
+
+    public function updatePassword(UserInterface $user, string $password): void
+    {
+        $user->setPassword($this->hashService->hashPassword($password));
 
         $this->entityManager->sync($user);
     }

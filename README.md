@@ -40,6 +40,7 @@ App that I am building to enhance my skills in backend development with PHP.
 - [x] delete receipts
 - [x] import csv file and save as transaction
 - [ ] import and store csv file
+- [ ] enable/disable 2fa in user profile
 
 #### Bugs
 

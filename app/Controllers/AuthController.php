@@ -7,9 +7,12 @@ namespace App\Controllers;
 use App\Contracts\AuthInterface;
 use App\Contracts\RequestValidatorFactoryInterface;
 use App\DataObjects\RegisterUserData;
+use App\Enum\AuthAttemptStatus;
 use App\Exception\ValidationException;
 use App\RequestValidators\Auth\RegisterUserRequestValidator;
 use App\RequestValidators\Auth\UserLoginRequestValidator;
+use App\RequestValidators\TwoFactorLoginRequestValidator;
+use App\ResponseFormatter;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
@@ -19,7 +22,8 @@ readonly class AuthController
     public function __construct(
         private Twig $twig,
         private RequestValidatorFactoryInterface $requestValidatorFactory,
-        private AuthInterface $auth
+        private AuthInterface $auth,
+        private ResponseFormatter $responseFormatter
     ) {
     }
 
@@ -52,11 +56,17 @@ readonly class AuthController
             $request->getParsedBody()
         );
 
-        if (!$this->auth->attemptLogin($data)) {
+        $status = $this->auth->attemptLogin($data);
+
+        if ($status === AuthAttemptStatus::FAILED) {
             throw new ValidationException(['password' => ['You have entered an invalid username or password']]);
         }
 
-        return $response->withHeader('Location', '/')->withStatus(302);
+        if ($status === AuthAttemptStatus::TWO_FACTOR_AUTH) {
+            return $this->responseFormatter->asJson($response, ['two_factor' => true]);
+        }
+
+        return $this->responseFormatter->asJson($response, []);
     }
 
     public function logout(Response $response): Response
@@ -64,5 +74,19 @@ readonly class AuthController
         $this->auth->logOut();
 
         return $response->withHeader('Location', '/')->withStatus(302);
+    }
+
+
+    public function twoFactorLogin(Request $request, Response $response): Response
+    {
+        $data = $this->requestValidatorFactory->make(TwoFactorLoginRequestValidator::class)->validate(
+            $request->getParsedBody()
+        );
+
+        if (!$this->auth->attemptTwoFactorLogin($data)) {
+            throw new ValidationException(['code' => ['Invalid Code']]);
+        }
+
+        return $response;
     }
 }

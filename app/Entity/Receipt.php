@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Traits\HasId;
-use App\Traits\HasTimeStamps;
+use App\Entity\Traits\HasId;
+use App\Entity\Traits\HasTimeStamps;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;

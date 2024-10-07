@@ -11,9 +11,9 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Views\Twig;
 
-class CsrfFieldsMiddleware implements MiddlewareInterface
+readonly class CsrfFieldsMiddleware implements MiddlewareInterface
 {
-    public function __construct(private readonly Twig $twig, private readonly ContainerInterface $container)
+    public function __construct(private Twig $twig, private ContainerInterface $container)
     {
     }
 

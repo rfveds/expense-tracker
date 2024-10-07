@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Traits;
+namespace App\Entity\Traits;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\PrePersist;

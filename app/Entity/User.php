@@ -6,8 +6,8 @@ namespace App\Entity;
 
 use App\Contracts\OwnableInterface;
 use App\Contracts\UserInterface;
-use App\Traits\HasId;
-use App\Traits\HasTimeStamps;
+use App\Entity\Traits\HasId;
+use App\Entity\Traits\HasTimeStamps;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\Column;
@@ -33,6 +33,9 @@ class User implements UserInterface
     #[Column]
     private string $password;
 
+    #[Column(name: 'two_factor', options: ['default' => false])]
+    private bool $twoFactor;
+
     #[Column(name: 'verified_at', nullable: true)]
     private ?\DateTime $verifiedAt;
 
@@ -46,6 +49,7 @@ class User implements UserInterface
     {
         $this->transactions = new ArrayCollection();
         $this->categories   = new ArrayCollection();
+        $this->twoFactor    = false;
     }
 
     public function getName(): string
@@ -116,6 +120,18 @@ class User implements UserInterface
     public function setVerifiedAt(\DateTime $verifiedAt): static
     {
         $this->verifiedAt = $verifiedAt;
+
+        return $this;
+    }
+
+    public function hasTwoFactorAuthEnabled(): bool
+    {
+        return $this->twoFactor;
+    }
+
+    public function setTwoFactor(bool $twoFactor): User
+    {
+        $this->twoFactor = $twoFactor;
 
         return $this;
     }
