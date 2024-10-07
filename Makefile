@@ -15,6 +15,9 @@ down:
 # Restart the Docker containers
 restart: down up
 
+# Update the Docker containers
+update: down build up
+
 # Install composer dependencies
 composer-install:
 	docker-compose -f docker/docker-compose.yml exec app composer install

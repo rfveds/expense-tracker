@@ -20,7 +20,7 @@ services:
       - ../:/var/www
       - ./nginx:/etc/nginx/conf.d
     networks:
-        - expense-tracker-network
+      - expense-tracker-network
   db:
     container_name: expense-tracker-db
     image: mysql:8.0
@@ -32,7 +32,7 @@ services:
     ports:
       - "3306:3306"
     networks:
-        - expense-tracker-network
+      - expense-tracker-network
   mailhog:
     container_name: expense-tracker-mailhog
     image: mailhog/mailhog
@@ -44,6 +44,16 @@ services:
       - expense-tracker-network
     logging:
       driver: "none"
+
+  redis:
+    container_name: expense-tracker-redis
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    restart: always
+    networks:
+      - expense-tracker-network
+    command: redis-server --requirepass mypassword
 
 networks:
   expense-tracker-network:

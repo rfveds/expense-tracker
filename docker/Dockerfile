@@ -39,6 +39,9 @@ RUN echo "xdebug.var_display_max_children=128" >> /usr/local/etc/php/conf.d/dock
 RUN echo "xdebug.var_display_max_data=512" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 RUN echo "xdebug.var_display_max_depth=3" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
+# Install redis
+RUN pecl install redis\
+    && docker-php-ext-enable redis
 
 RUN groupadd dev -g 999
 RUN useradd dev -g dev -d /home/dev -m
