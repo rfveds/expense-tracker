@@ -3,33 +3,46 @@
 App that I am building to enhance my skills in backend development with PHP.
 
 ### Setup Instructions
+
 1 . Clone the repository
+
 ```bash
 git clone https://github.com/rfveds/expense-tracker.git
 ```
+
 2. Change directory to the project folder
+
 ```bash
 cd expense-tracker
 ```
+
 3. Copy the `.env.example` file to `.env`
+
 ```bash
 cp .env.example .env
 ```
+
 4. Edit the `.env` file and set the environment variables
 5. Setup the project with docker
+
 ```bash
 make setup
 ```
-
 
 ### Technologies
 
 - PHP 8.3
 - Slim Framework 4
 - Nginx
+- Redis
+- Doctrine ORM
 - MySQL
 - Docker
 - PHPUnit
+- JavaScript
+- DataTables
+- Bootstrap 5
+- Chart.js
 
 ### Features
 
@@ -64,7 +77,7 @@ make setup
 - [x] current route middleware
 - [x] add data fixtures
 - [ ] date picker for dashboard statistics
-- [ ] better ui 
+- [ ] better ui
 - [ ] admin panel
 
 ### Bugs
