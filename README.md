@@ -1,8 +1,28 @@
-### Expense Tracker
+## Expense Tracker
 
 App that I am building to enhance my skills in backend development with PHP.
 
-#### Technologies
+### Setup Instructions
+1 . Clone the repository
+```bash
+git clone https://github.com/rfveds/expense-tracker.git
+```
+2. Change directory to the project folder
+```bash
+cd expense-tracker
+```
+3. Copy the `.env.example` file to `.env`
+```bash
+cp .env.example .env
+```
+4. Edit the `.env` file and set the environment variables
+5. Setup the project with docker
+```bash
+make setup
+```
+
+
+### Technologies
 
 - PHP 8.3
 - Slim Framework 4
@@ -11,7 +31,7 @@ App that I am building to enhance my skills in backend development with PHP.
 - Docker
 - PHPUnit
 
-#### Features
+### Features
 
 - [x] User Authentication
 - [x] Form Validation with Factory Design Pattern
@@ -31,7 +51,7 @@ App that I am building to enhance my skills in backend development with PHP.
 - [x] Rate Limiting
 - [ ] Uploading Files to S3 Bucket
 
-##### To do
+### To do
 
 - [x] create category modal
 - [x] when creating transaction, load categories with ajax
@@ -47,6 +67,6 @@ App that I am building to enhance my skills in backend development with PHP.
 - [ ] better ui 
 - [ ] admin panel
 
-#### Bugs
+### Bugs
 
 - [ ] When editing transaction, current category is not selected

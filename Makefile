@@ -1,5 +1,8 @@
 # Makefile
 
+# Setup the project
+setup: build up generate-key composer-install npm-install migrate fixtures npm-dev
+
 # Build the Docker containers
 build:
 	docker-compose -f docker/docker-compose.yml build
@@ -56,4 +59,4 @@ npm-build:
 
 # Generate a new application key
 generate-key:
-	docker-compose -f docker/docker-compose.yml exec app php expense-tracker app:generate-key
+	docker-compose -f docker/docker-compose.yml exec app php expense-tracker app:generate-key --no-interaction
