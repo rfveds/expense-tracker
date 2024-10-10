@@ -11,7 +11,7 @@ class TransactionFixtures extends AbstractBaseFixtures implements DependentFixtu
 {
     protected function loadData(): void
     {
-        $this->createMany(100, 'transactions', function () {
+        $this->createMany(10000, 'transactions', function () {
             /** @var User $user */
             $user               = $this->getRandomReference('users');
             $categories         = $user->getCategories()->toArray();
@@ -21,7 +21,7 @@ class TransactionFixtures extends AbstractBaseFixtures implements DependentFixtu
             $transaction->setDescription($this->faker->sentence);
             $transaction->setUser($user);
             $transaction->setAmount($this->faker->randomFloat(min: -10000, max: 10000));
-            $transaction->setDate(new \DateTime());
+            $transaction->setDate($this->faker->dateTimeBetween('-1 years', 'now'));
             $transaction->setCategory($categories[$randomUserCategory]);
 
             return $transaction;
