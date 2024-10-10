@@ -15,10 +15,12 @@
   },
   "require": {
     "ext-pdo": "*",
+    "ext-redis": "*",
+    "beberlei/doctrineextensions": "dev-master",
     "doctrine/dbal": "^3.4",
     "doctrine/migrations": "^3.5",
     "doctrine/orm": "^2.13",
-    "beberlei/doctrineextensions": "dev-master",
+    "fakerphp/faker": "^1.23",
     "itsgoingd/clockwork": "^5.2",
     "league/flysystem": "^3.0",
     "php-di/php-di": "^6.4",
@@ -36,10 +38,10 @@
     "twig/intl-extra": "^3.4",
     "twig/twig": "^3.4",
     "vlucas/phpdotenv": "^5.4",
-    "vlucas/valitron": "^1.4",
-    "ext-redis": "*"
+    "vlucas/valitron": "^1.4"
   },
   "require-dev": {
+    "doctrine/doctrine-fixtures-bundle": "^3.6",
     "phpunit/phpunit": "^9.5"
   }
 }

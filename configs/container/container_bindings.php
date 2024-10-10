@@ -110,6 +110,9 @@ return [
             $ormConfig
         );
     },
+    EntityManager::class                    => fn(ContainerInterface $container) => $container->get(
+        EntityManagerInterface::class
+    ),
     Twig::class                             => function (Config $config, ContainerInterface $container) {
         $twig = Twig::create(VIEW_PATH, [
             'cache'       => STORAGE_PATH . '/cache/templates',
@@ -167,7 +170,7 @@ return [
 
         return new Filesystem($adapter);
     },
-    Clockwork::class                        => function (EntityManagerInterface $entityManager) {
+    Clockwork::class                        => function (EntityManager $entityManager) {
         $clockwork = new Clockwork();
 
         $clockwork->storage(new FileStorage(STORAGE_PATH . '/clockwork'));
@@ -195,7 +198,8 @@ return [
 
         return new RedisAdapter($redis);
     },
-    RateLimiterFactory::class               => fn(RedisAdapter $redisAdapter, Config $config) => new RateLimiterFactory(
-        $config->get('limiter'), new CacheStorage($redisAdapter)
-    ),
+    RateLimiterFactory::class               => fn(
+        RedisAdapter $redisAdapter,
+        Config $config
+    ) => new RateLimiterFactory($config->get('limiter'), new CacheStorage($redisAdapter)),
 ];

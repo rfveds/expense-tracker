@@ -42,7 +42,7 @@ App that I am building to enhance my skills in backend development with PHP.
 - [ ] import and store csv file
 - [x] enable/disable 2fa in user profile
 - [x] current route middleware
-- [ ] add data fixtures
+- [x] add data fixtures
 - [ ] date picker for dashboard statistics
 
 #### Bugs

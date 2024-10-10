@@ -34,6 +34,10 @@ make-migration:
 migrate:
 	docker-compose -f docker/docker-compose.yml exec app php expense-tracker migrations:migrate --no-interaction
 
+# Load fixtures
+fixtures:
+	docker-compose -f docker/docker-compose.yml exec app php expense-tracker app:generate-data-fixtures --no-interaction
+
 # Install npm dependencies
 npm-install:
 	docker-compose -f docker/docker-compose.yml exec app npm install
