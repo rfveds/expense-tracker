@@ -44,6 +44,8 @@ App that I am building to enhance my skills in backend development with PHP.
 - [x] current route middleware
 - [x] add data fixtures
 - [ ] date picker for dashboard statistics
+- [ ] better ui 
+- [ ] admin panel
 
 #### Bugs
 
